@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ostoslistat</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{nav :: topnav}"></div>
+<main class="page grid two">
+    <section class="card">
+        <h2>Uusi ostoslista</h2>
+        <form th:action="@{/shopping-lists}" th:object="${shoppingList}" method="post">
+            <label>Nimi</label>
+            <input th:field="*{name}" type="text">
+            <small class="error" th:errors="*{name}"></small>
+            <button class="button" type="submit">Luo lista</button>
+        </form>
+    </section>
+    <section class="card">
+        <h2>Listat</h2>
+        <article class="shopping-block" th:each="list : ${shoppingLists}">
+            <div class="actions">
+                <strong th:text="${list.name}">Lista</strong>
+                <form method="post" th:action="@{'/shopping-lists/' + ${list.id} + '/delete'}">
+                    <button class="link-button" type="submit">Poista lista</button>
+                </form>
+            </div>
+            <ul>
+                <li th:each="item : ${list.items}">
+                    <span th:text="${item.itemName + ' (' + item.quantity + ')'}">Tuote</span>
+                    <strong th:text="${item.purchased ? 'Ostettu' : 'Kesken'}">Tila</strong>
+                    <form method="post" th:action="@{'/shopping-lists/items/' + ${item.id} + '/toggle'}">
+                        <button class="link-button" type="submit">Vaihda tila</button>
+                    </form>
+                </li>
+            </ul>
+            <form class="inline-form" th:action="@{'/shopping-lists/' + ${list.id} + '/items'}" method="post">
+                <input name="itemName" placeholder="Tuote">
+                <input name="quantity" placeholder="Määrä">
+                <button class="button secondary" type="submit">Lisää</button>
+            </form>
+        </article>
+    </section>
+</main>
+</body>
+</html>

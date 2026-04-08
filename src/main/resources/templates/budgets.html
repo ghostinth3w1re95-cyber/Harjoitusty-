@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Budjetit</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{nav :: topnav}"></div>
+<main class="page grid two">
+    <section class="card">
+        <h2>Budjetti</h2>
+        <form th:action="@{/budgets}" th:object="${budget}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <label>Kuukausi</label>
+            <input th:field="*{budgetMonth}" type="month">
+            <small class="error" th:errors="*{budgetMonth}"></small>
+            <label>Suunniteltu summa</label>
+            <input th:field="*{plannedAmount}" type="number" step="0.01">
+            <small class="error" th:errors="*{plannedAmount}"></small>
+            <label>Kategoria</label>
+            <a th:href="@{/categories}">Lisää uusi kategoria</a>
+            <select name="categoryId">
+                <option value="">Valitse kategoria</option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"
+                        th:selected="${budget.category != null and budget.category.id == category.id}"></option>
+            </select>
+            <small class="error" th:errors="*{category}"></small>
+            <button class="button" type="submit">Tallenna</button>
+        </form>
+    </section>
+    <section class="card">
+        <h2>Budjettilista</h2>
+        <div class="table-row" th:each="item : ${budgets}">
+            <div>
+                <strong th:text="${item.category.name}">Kategoria</strong>
+                <p th:text="${item.budgetMonth + ' | ' + item.plannedAmount + ' EUR'}">Rivi</p>
+            </div>
+            <div class="actions">
+                <a th:href="@{'/budgets/' + ${item.id} + '/edit'}">Muokkaa</a>
+                <form method="post" th:action="@{'/budgets/' + ${item.id} + '/delete'}">
+                    <button class="link-button" type="submit">Poista</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{app.title}">Helpotus Arkeen</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <h1>Helpotus Arkeen</h1>
+    <nav>
+        <a th:href="@{/}">Etusivu</a>
+        <a th:href="@{/recipes}">Reseptit</a>
+        <a th:href="@{/login}">Kirjaudu</a>
+    </nav>
+</header>
+<main class="page">
+    <section class="hero">
+        <div>
+            <p class="eyebrow">Harjoitustyö / Spring Boot CRUD</p>
+            <h2 th:text="#{home.hero.title}">Helpotus Arkeen yhdistää henkilökohtaisen talouden ja ruokasuunnittelun.</h2>
+            <p th:text="#{home.hero.subtitle}">Vierailija voi selata reseptejä ja sisältöä.</p>
+            <a class="button" th:href="@{/login}" th:text="#{home.public.cta}">Kirjaudu hallintaliittymään</a>
+        </div>
+        <div class="card accent">
+            <h3>Toiminnot</h3>
+            <ul>
+                <li>Kulujen kirjaus ja kategorisointi</li>
+                <li>Kuukausibudjetit kategorioille</li>
+                <li>Reseptit ja ainesosat</li>
+                <li>Ostoslistat ja toivelista</li>
+                <li>Roolipohjainen kirjautuminen</li>
+                <li>REST-rajapinnat JSON-muodossa</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="grid two">
+        <div class="card">
+            <h3 th:text="#{home.public.recipes}">Julkiset reseptit</h3>
+            <div class="stack" th:each="recipe : ${recipes}">
+                <strong th:text="${recipe.name}">Resepti</strong>
+                <span th:text="${recipe.description}">Kuvaus</span>
+            </div>
+        </div>
+        <div class="card">
+            <h3 th:text="#{home.public.expenses}">Viimeisimmät kulut</h3>
+            <div class="stack" th:each="expense : ${latestExpenses}">
+                <strong th:text="${expense.title}">Kulu</strong>
+                <span th:text="${expense.expenseDate + ' - ' + expense.amount + ' EUR'}">2026-04-01 - 20 EUR</span>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

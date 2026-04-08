@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="topbar" th:fragment="topnav">
+    <h1>Helpotus Arkeen</h1>
+    <nav>
+        <a th:href="@{/dashboard}">Dashboard</a>
+        <a th:href="@{/expenses}">Kulut</a>
+        <a th:href="@{/budgets}">Budjetit</a>
+        <a th:href="@{/categories}">Kategoriat</a>
+        <a th:href="@{/manage-recipes}">Reseptit</a>
+        <a th:href="@{/shopping-lists}">Ostoslistat</a>
+        <a th:href="@{/wish-items}">Toivelista</a>
+        <a th:if="${isAdmin}" th:href="@{/admin}">Admin-paneeli</a>
+        <form method="post" th:action="@{/logout}">
+            <button class="link-button" type="submit">Kirjaudu ulos</button>
+        </form>
+    </nav>
+</header>
+</body>
+</html>

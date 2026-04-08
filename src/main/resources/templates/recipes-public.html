@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reseptit</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <h1>Helpotus Arkeen</h1>
+    <nav>
+        <a th:href="@{/}">Etusivu</a>
+        <a th:href="@{/login}">Kirjaudu</a>
+    </nav>
+</header>
+<main class="page">
+    <h2>Julkiset reseptit</h2>
+    <section class="grid two">
+        <article class="card" th:each="recipe : ${recipes}">
+            <h3 th:text="${recipe.name}">Resepti</h3>
+            <p th:text="${recipe.description}">Kuvaus</p>
+            <p>
+                <strong>Ainekset:</strong>
+                <span th:text="${#strings.listJoin(recipe.ingredients.![name], ', ')}">Ainekset</span>
+            </p>
+        </article>
+    </section>
+</main>
+</body>
+</html>

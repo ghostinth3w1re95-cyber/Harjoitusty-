@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hallinnoi reseptejä</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{nav :: topnav}"></div>
+<main class="page grid two">
+    <section class="card">
+        <h2>Resepti</h2>
+        <form th:action="@{/manage-recipes}" th:object="${recipe}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <label>Nimi</label>
+            <input th:field="*{name}" type="text">
+            <small class="error" th:errors="*{name}"></small>
+            <label>Kuvaus</label>
+            <textarea th:field="*{description}"></textarea>
+            <label>Ainekset</label>
+            <select name="ingredientIds" multiple size="5">
+                <option th:each="ingredient : ${ingredients}"
+                        th:value="${ingredient.id}"
+                        th:text="${ingredient.name}"
+                        th:selected="${selectedIngredientIds.contains(ingredient.id)}"></option>
+            </select>
+            <label class="checkbox"><input th:field="*{publicVisible}" type="checkbox"> Julkinen resepti</label>
+            <button class="button" type="submit">Tallenna</button>
+        </form>
+    </section>
+    <section class="card">
+        <h2>Omat reseptit</h2>
+        <div class="table-row" th:each="item : ${recipes}">
+            <div>
+                <strong th:text="${item.name}">Nimi</strong>
+                <p th:text="${item.description}">Kuvaus</p>
+            </div>
+            <div class="actions">
+                <a th:href="@{'/manage-recipes/' + ${item.id} + '/edit'}">Muokkaa</a>
+                <form method="post" th:action="@{'/manage-recipes/' + ${item.id} + '/delete'}">
+                    <button class="link-button" type="submit">Poista</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

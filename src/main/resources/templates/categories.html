@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kategoriat</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{nav :: topnav}"></div>
+<main class="page grid two">
+    <section class="card">
+        <h2>Kategoriat</h2>
+        <p>Luo uusi kategoria, kuten Asuminen, Ruoka tai Harrastukset.</p>
+        <p class="success" th:if="${successMessage}" th:text="${successMessage}"></p>
+        <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+        <form th:action="@{/categories}" th:object="${category}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <label>Nimi</label>
+            <input th:field="*{name}" type="text">
+            <small class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+            <label>Kuvaus</label>
+            <textarea th:field="*{description}"></textarea>
+            <button class="button" type="submit" th:text="${editing} ? 'Päivitä kategoria' : 'Lisää kategoria'">Lisää kategoria</button>
+        </form>
+    </section>
+    <section class="card">
+        <h2>Lista</h2>
+        <div class="table-row" th:each="item : ${categories}">
+            <div>
+                <strong th:text="${item.name}">Nimi</strong>
+                <p th:text="${item.description}">Kuvaus</p>
+            </div>
+            <div class="actions">
+                <a th:href="@{'/categories/' + ${item.id} + '/edit'}">Muokkaa</a>
+                <form method="post" th:action="@{'/categories/' + ${item.id} + '/delete'}">
+                    <button class="link-button" type="submit">Poista</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

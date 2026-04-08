@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin-paneeli</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{nav :: topnav}"></div>
+<main class="page grid two">
+    <section class="card">
+        <h2>Admin-paneeli</h2>
+        <p>Tässä näkymässä admin voi tarkastella käyttäjiä ja poistaa heidän sisältöjään.</p>
+        <p class="success" th:if="${successMessage}" th:text="${successMessage}"></p>
+        <div class="table-row" th:each="userItem : ${users}">
+            <div>
+                <strong th:text="${userItem.fullName}">Käyttäjä</strong>
+                <p th:text="${userItem.username + ' | ' + userItem.email + ' | ' + userItem.role}">Tiedot</p>
+            </div>
+            <div class="actions">
+                <a th:href="@{'/admin?username=' + ${userItem.username}}">Avaa tiedot</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="card" th:if="${selectedUser != null}">
+        <h2 th:text="'Valittu käyttäjä: ' + ${selectedUser.fullName}">Valittu käyttäjä</h2>
+        <p th:text="${selectedUser.username + ' | ' + selectedUser.email + ' | ' + selectedUser.role}">Perustiedot</p>
+
+        <h3>Kulut</h3>
+        <div class="table-row" th:each="item : ${expenses}">
+            <div>
+                <strong th:text="${item.title}">Kulu</strong>
+                <p th:text="${item.expenseDate + ' | ' + item.amount + ' EUR | ' + item.category.name}">Tiedot</p>
+            </div>
+            <form method="post" th:action="@{'/admin/expenses/' + ${item.id} + '/delete'}">
+                <input type="hidden" name="username" th:value="${selectedUser.username}">
+                <button class="link-button" type="submit">Poista</button>
+            </form>
+        </div>
+
+        <h3>Budjetit</h3>
+        <div class="table-row" th:each="item : ${budgets}">
+            <div>
+                <strong th:text="${item.category.name}">Kategoria</strong>
+                <p th:text="${item.budgetMonth + ' | ' + item.plannedAmount + ' EUR'}">Tiedot</p>
+            </div>
+            <form method="post" th:action="@{'/admin/budgets/' + ${item.id} + '/delete'}">
+                <input type="hidden" name="username" th:value="${selectedUser.username}">
+                <button class="link-button" type="submit">Poista</button>
+            </form>
+        </div>
+
+        <h3>Reseptit</h3>
+        <div class="table-row" th:each="item : ${recipes}">
+            <div>
+                <strong th:text="${item.name}">Resepti</strong>
+                <p th:text="${item.description}">Kuvaus</p>
+            </div>
+            <form method="post" th:action="@{'/admin/recipes/' + ${item.id} + '/delete'}">
+                <input type="hidden" name="username" th:value="${selectedUser.username}">
+                <button class="link-button" type="submit">Poista</button>
+            </form>
+        </div>
+
+        <h3>Ostoslistat</h3>
+        <div class="table-row" th:each="list : ${shoppingLists}">
+            <div>
+                <strong th:text="${list.name}">Lista</strong>
+                <p th:text="${'Tuotteita: ' + #lists.size(list.items)}">Määrä</p>
+            </div>
+            <form method="post" th:action="@{'/admin/shopping-lists/' + ${list.id} + '/delete'}">
+                <input type="hidden" name="username" th:value="${selectedUser.username}">
+                <button class="link-button" type="submit">Poista</button>
+            </form>
+        </div>
+
+        <h3>Toivelista</h3>
+        <div class="table-row" th:each="item : ${wishItems}">
+            <div>
+                <strong th:text="${item.itemName}">Tuote</strong>
+                <p th:text="${item.status + ' | ' + item.targetPrice + ' EUR'}">Tiedot</p>
+            </div>
+            <form method="post" th:action="@{'/admin/wish-items/' + ${item.id} + '/delete'}">
+                <input type="hidden" name="username" th:value="${selectedUser.username}">
+                <button class="link-button" type="submit">Poista</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="card" th:if="${selectedUser == null}">
+        <h2>Valitse käyttäjä</h2>
+        <p>Valitse vasemmalta käyttäjä, jonka tietoja haluat hallita.</p>
+    </section>
+</main>
+</body>
+</html>

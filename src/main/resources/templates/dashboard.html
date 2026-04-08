@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{nav :: topnav}"></div>
+<main class="page">
+    <h2 th:text="#{dashboard.title}">Hallintapaneeli</h2>
+    <p th:text="#{dashboard.summary}">Nopea yhteenveto.</p>
+    <p th:if="${isAdmin}">
+        <a class="button" th:href="@{/admin}">Avaa admin-paneeli</a>
+    </p>
+    <section class="grid three">
+        <article class="card"><h3>Kulut</h3><p th:text="${stats.expenseCount}">0</p><small th:text="${stats.totalExpenses + ' EUR'}">0 EUR</small></article>
+        <article class="card"><h3>Budjetit</h3><p th:text="${stats.budgetCount}">0</p></article>
+        <article class="card"><h3>Reseptit</h3><p th:text="${stats.recipeCount}">0</p></article>
+        <article class="card"><h3>Ostoslistat</h3><p th:text="${stats.shoppingListCount}">0</p></article>
+        <article class="card"><h3>Toivelistan tuotteet</h3><p th:text="${stats.wishItemCount}">0</p></article>
+        <article class="card"><h3>REST</h3><p><code>/api/recipes</code><br><code>/api/expenses</code></p></article>
+    </section>
+</main>
+</body>
+</html>

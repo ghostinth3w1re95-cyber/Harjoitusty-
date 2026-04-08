@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kirjaudu</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="centered">
+    <section class="card auth">
+        <h1 th:text="#{login.title}">Kirjaudu sisään</h1>
+        <p class="success" th:if="${successMessage}" th:text="${successMessage}"></p>
+        <p>Testitunnukset: <code>mira / user123</code> ja <code>admin / admin123</code></p>
+        <form method="post" th:action="@{/login}">
+            <label for="username" th:text="#{login.username}">Käyttäjätunnus</label>
+            <input id="username" name="username" type="text">
+
+            <label for="password" th:text="#{login.password}">Salasana</label>
+            <input id="password" name="password" type="password">
+
+            <button class="button" type="submit" th:text="#{login.submit}">Kirjaudu</button>
+        </form>
+        <p>Eikö sinulla ole tunnusta? <a th:href="@{/register}">Luo uusi käyttäjä</a></p>
+        <a th:href="@{/}">Takaisin etusivulle</a>
+    </section>
+</main>
+</body>
+</html>

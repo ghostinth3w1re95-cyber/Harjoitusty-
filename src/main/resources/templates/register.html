@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rekisteröidy</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="centered">
+    <section class="card auth">
+        <h1>Luo uusi käyttäjä</h1>
+        <form th:action="@{/register}" th:object="${registrationForm}" method="post">
+            <label for="fullName">Nimi</label>
+            <input id="fullName" th:field="*{fullName}" type="text">
+            <small class="error" th:errors="*{fullName}"></small>
+
+            <label for="username">Käyttäjätunnus</label>
+            <input id="username" th:field="*{username}" type="text">
+            <small class="error" th:errors="*{username}"></small>
+
+            <label for="email">Sähköposti</label>
+            <input id="email" th:field="*{email}" type="email">
+            <small class="error" th:errors="*{email}"></small>
+
+            <label for="password">Salasana</label>
+            <input id="password" th:field="*{password}" type="password">
+            <small class="error" th:errors="*{password}"></small>
+
+            <label for="confirmPassword">Vahvista salasana</label>
+            <input id="confirmPassword" th:field="*{confirmPassword}" type="password">
+            <small class="error" th:errors="*{confirmPassword}"></small>
+
+            <button class="button" type="submit">Luo käyttäjä</button>
+        </form>
+        <a th:href="@{/login}">Takaisin kirjautumiseen</a>
+    </section>
+</main>
+</body>
+</html>
